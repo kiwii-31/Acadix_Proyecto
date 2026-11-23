@@ -1,0 +1,209 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum PeriodType {
+  CUATRIMESTER
+  BIMESTER
+  RECOVERY
+}
+
+enum PeriodStatus {
+  OPEN
+  CLOSED
+}
+
+enum ProgramStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  student Student?
+  teacher Teacher?
+}
+
+model Student {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollments Enrollment[]
+}
+
+model Teacher {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  user               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments        TeacherAssignment[]
+  createdPrograms    Program[]           @relation("ProgramCreator")
+  responsiblePrograms Program[]          @relation("ProgramResponsible")
+}
+
+model AcademicYear {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  startDate DateTime?
+  endDate   DateTime?
+  createdAt DateTime @default(now())
+
+  courses     Course[]
+  periods     AcademicPeriod[]
+  enrollments Enrollment[]
+}
+
+model Course {
+  id            String @id @default(cuid())
+  name          String
+  order         Int
+  academicYearId String
+
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+  divisions    Division[]
+
+  @@unique([academicYearId, name])
+  @@unique([academicYearId, order])
+}
+
+model Division {
+  id       String @id @default(cuid())
+  name     String
+  courseId String
+
+  course      Course       @relation(fields: [courseId], references: [id])
+  subjects    Subject[]
+  enrollments Enrollment[]
+
+  @@unique([courseId, name])
+}
+
+model Enrollment {
+  id            String   @id @default(cuid())
+  studentId     String
+  academicYearId String
+  divisionId    String
+  createdAt     DateTime @default(now())
+
+  student     Student     @relation(fields: [studentId], references: [id])
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+  division    Division    @relation(fields: [divisionId], references: [id])
+
+  @@unique([studentId, academicYearId])
+}
+
+model Subject {
+  id         String @id @default(cuid())
+  name       String
+  divisionId String
+
+  division    Division            @relation(fields: [divisionId], references: [id])
+  assignments TeacherAssignment[]
+  programs    Program[]
+
+  @@unique([divisionId, name])
+}
+
+model TeacherAssignment {
+  id        String   @id @default(cuid())
+  teacherId String
+  subjectId String
+  createdAt DateTime @default(now())
+
+  teacher Teacher @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+  @@unique([teacherId, subjectId])
+}
+
+model AcademicPeriod {
+  id            String       @id @default(cuid())
+  name          String
+  type          PeriodType
+  status        PeriodStatus @default(CLOSED)
+  academicYearId String
+  parentId      String?
+
+  academicYear AcademicYear      @relation(fields: [academicYearId], references: [id])
+  parent       AcademicPeriod?   @relation("PeriodHierarchy", fields: [parentId], references: [id])
+  children     AcademicPeriod[]  @relation("PeriodHierarchy")
+  programs     Program[]
+
+  @@unique([academicYearId, name])
+}
+
+model Program {
+  id                  String        @id @default(cuid())
+  title               String
+  description         String?
+  status              ProgramStatus @default(DRAFT)
+  subjectId           String
+  periodId            String
+  creatorTeacherId    String
+  responsibleTeacherId String
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  publishedAt         DateTime?
+
+  subject           Subject @relation(fields: [subjectId], references: [id])
+  period            AcademicPeriod @relation(fields: [periodId], references: [id])
+  creatorTeacher    Teacher @relation("ProgramCreator", fields: [creatorTeacherId], references: [id])
+  responsibleTeacher Teacher @relation("ProgramResponsible", fields: [responsibleTeacherId], references: [id])
+  topics            Topic[]
+}
+
+model Topic {
+  id          String @id @default(cuid())
+  title       String
+  description String?
+  order       Int
+  programId   String
+
+  program   Program    @relation(fields: [programId], references: [id], onDelete: Cascade)
+  materials Material[]
+
+  @@unique([programId, order])
+}
+
+model Material {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  fileName    String
+  mimeType    String
+  sizeBytes   Int
+  fileData    Bytes
+  topicId     String
+  createdAt   DateTime @default(now())
+
+  topic Topic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+}
+

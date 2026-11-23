@@ -1,0 +1,197 @@
+
+.academic-periods-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .periods-intro h3,
+  .cuatrimestre-heading h3 {
+    margin: 0 0 8px;
+    color: #26352d;
+    font-size: 19px;
+  }
+  
+  .periods-intro p {
+    margin: 0;
+    color: #7b887f;
+    font-size: 14px;
+  }
+  
+  .periods-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 300px;
+  }
+  
+  .periods-filter label {
+    color: #435349;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .periods-filter select {
+    padding: 12px 14px;
+    border: 1px solid #dce5de;
+    border-radius: 9px;
+    background: white;
+    color: #34443a;
+    font: inherit;
+    outline: none;
+  }
+  
+  .periods-filter select:focus {
+    border-color: #57966e;
+    box-shadow: 0 0 0 3px #57966e20;
+  }
+  
+  .periods-error,
+  .periods-success {
+    font-size: 14px;
+  }
+  
+  .periods-error {
+    color: #bd4545;
+  }
+  
+  .periods-success {
+    color: #438254;
+  }
+  
+  .periods-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  
+  .cuatrimestre-group,
+  .recovery-group {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px;
+    background: #f8faf8;
+    border: 1px solid #e5ebe6;
+    border-radius: 14px;
+  }
+  
+  .cuatrimestre-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  
+  .cuatrimestre-heading span {
+    display: block;
+    margin-bottom: 6px;
+    color: #849087;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .cuatrimestre-heading h3 {
+    margin: 0;
+  }
+  
+  .period-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  
+  .period-status.open {
+    background: #eaf5ed;
+    color: #438254;
+  }
+  
+  .period-status.closed {
+    background: #f0f2f0;
+    color: #778179;
+  }
+  
+  .bimesters-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  
+  .period-card {
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5ebe6;
+    border-radius: 11px;
+  }
+  
+  .period-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  
+  .period-card-info h4 {
+    margin: 0 0 9px;
+    color: #34483a;
+    font-size: 15px;
+  }
+  
+  .period-card-info button {
+    width: 100%;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .period-open {
+    background: #edf5ef;
+    color: #527b5e;
+  }
+  
+  .period-open:hover {
+    background: #dcecdf;
+  }
+  
+  .period-close {
+    background: #f8eeee;
+    color: #b84e4e;
+  }
+  
+  .period-close:hover {
+    background: #f2dddd;
+  }
+  
+  .period-card-info button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .recovery-group .period-card {
+    max-width: 420px;
+  }
+  
+  @media (max-width: 600px) {
+    .cuatrimestre-group,
+    .recovery-group {
+      padding: 15px;
+    }
+  
+    .cuatrimestre-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  
+    .recovery-group .period-card {
+      max-width: none;
+    }
+  }
+  

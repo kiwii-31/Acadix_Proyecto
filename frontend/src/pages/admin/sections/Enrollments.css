@@ -1,0 +1,222 @@
+.enrollments-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.enrollments-intro h3 {
+  margin: 0 0 8px;
+  color: #26352d;
+  font-size: 19px;
+}
+
+.enrollments-intro p {
+  margin: 0;
+  color: #7b887f;
+  font-size: 14px;
+}
+
+.enrollments-filter,
+.enrollment-fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.enrollments-filter {
+  max-width: 300px;
+}
+
+.enrollments-filter label,
+.enrollment-fields label {
+  color: #435349;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.enrollments-filter select,
+.enrollment-fields select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #dce5de;
+  border-radius: 9px;
+  background: white;
+  color: #34443a;
+  font: inherit;
+  outline: none;
+}
+
+.enrollments-filter select:focus,
+.enrollment-fields select:focus {
+  border-color: #57966e;
+  box-shadow: 0 0 0 3px #57966e20;
+}
+
+.enrollment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px;
+  background: #f8faf8;
+  border: 1px solid #e5ebe6;
+  border-radius: 14px;
+}
+
+.enrollment-form h4,
+.enrollments-list-heading h4 {
+  margin: 0;
+  color: #34483a;
+  font-size: 16px;
+}
+
+.enrollment-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.enrollment-form button {
+  align-self: flex-start;
+  padding: 11px 18px;
+  border: 0;
+  border-radius: 9px;
+  background: #4d8960;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.enrollment-form button:hover {
+  background: #3d7550;
+}
+
+.enrollment-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.enrollments-error,
+.enrollments-success {
+  font-size: 14px;
+}
+
+.enrollments-error {
+  color: #bd4545;
+}
+
+.enrollments-success {
+  color: #438254;
+}
+
+.enrollments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.enrollments-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.enrollments-list-heading span {
+  color: #7b887f;
+  font-size: 13px;
+}
+
+.enrollments-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid #e5ebe6;
+  border-radius: 12px;
+  background: white;
+}
+
+.enrollments-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.enrollments-table th,
+.enrollments-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf0ed;
+  color: #435349;
+  font-size: 14px;
+}
+
+.enrollments-table th {
+  background: #f8faf8;
+  color: #68776d;
+  font-weight: 600;
+}
+
+.enrollments-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .enrollment-form {
+    padding: 16px;
+  }
+
+  .enrollments-list-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.enrollment-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.enrollment-edit {
+  padding: 9px 12px;
+  border: 1px solid #dce5de;
+  border-radius: 8px;
+  background: #edf5ef;
+  color: #527b5e;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.enrollment-edit:hover {
+  background: #dcecdf;
+}
+
+.enrollment-actions button {
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #4d8960;
+  color: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.enrollment-actions .enrollment-cancel {
+  background: #f0f2f0;
+  color: #68776d;
+}
+
+.enrollment-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.enrollments-table td select {
+  padding: 9px;
+  border: 1px solid #dce5de;
+  border-radius: 8px;
+  background: white;
+  color: #34443a;
+  font: inherit;
+}

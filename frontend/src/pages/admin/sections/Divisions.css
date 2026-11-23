@@ -1,0 +1,201 @@
+.divisions-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.divisions-intro h3,
+.divisions-list-heading h3 {
+  margin: 0 0 8px;
+  color: #26352d;
+  font-size: 19px;
+}
+
+.divisions-intro p {
+  margin: 0;
+  color: #7b887f;
+  font-size: 14px;
+}
+
+.divisions-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.division-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 260px;
+}
+
+.division-filter label {
+  color: #435349;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.division-filter select {
+  padding: 12px 14px;
+  border: 1px solid #dce5de;
+  border-radius: 9px;
+  background: white;
+  color: #34443a;
+  font: inherit;
+  outline: none;
+}
+
+.division-filter select:focus {
+  border-color: #57966e;
+  box-shadow: 0 0 0 3px #57966e20;
+}
+
+.division-filter select:disabled {
+  background: #f3f5f3;
+  cursor: not-allowed;
+}
+
+.divisions-error {
+  color: #bd4545;
+  font-size: 14px;
+}
+
+.divisions-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.divisions-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.divisions-list-heading span {
+  color: #63806b;
+  font-size: 13px;
+}
+
+.divisions-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 14px;
+}
+
+.division-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  background: white;
+  border: 1px solid #e5ebe6;
+  border-radius: 12px;
+}
+
+.division-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #edf5ef;
+  color: #57966e;
+  font-size: 20px;
+}
+
+.division-card h4 {
+  margin: 0 0 5px;
+  color: #34483a;
+  font-size: 16px;
+}
+
+.division-card p {
+  margin: 0;
+  color: #849087;
+  font-size: 12px;
+}
+
+@media (max-width: 600px) {
+  .division-filter {
+    width: 100%;
+  }
+
+  .divisions-list-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.division-create-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  background: #f7faf7;
+  border: 1px solid #e2ebe3;
+  border-radius: 12px;
+}
+
+.division-create-form h3 {
+  margin: 0 0 6px;
+  color: #26352d;
+  font-size: 17px;
+}
+
+.division-create-form p {
+  margin: 0;
+  color: #7b887f;
+  font-size: 13px;
+}
+
+.division-create-fields {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.division-create-fields input {
+  padding: 12px 14px;
+  border: 1px solid #dce5de;
+  border-radius: 9px;
+  background: white;
+  color: #34443a;
+  font: inherit;
+  outline: none;
+}
+
+.division-create-fields input:focus {
+  border-color: #57966e;
+  box-shadow: 0 0 0 3px #57966e20;
+}
+
+.division-create-fields button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 9px;
+  background: #57966e;
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.division-create-fields button:hover {
+  background: #467f5b;
+}
+
+.division-create-fields button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.divisions-success {
+  color: #398052;
+  font-size: 14px;
+}

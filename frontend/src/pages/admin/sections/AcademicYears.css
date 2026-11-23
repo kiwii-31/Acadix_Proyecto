@@ -1,0 +1,259 @@
+
+.academic-years {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .years-intro {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .years-intro h3,
+  .year-form-card h3,
+  .years-list-heading h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    color: #29382f;
+  }
+  
+  .years-intro p {
+    margin: 0;
+    color: #89958c;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .years-total {
+    padding: 8px 13px;
+    border-radius: 20px;
+    background: #eaf3ed;
+    color: #28784b;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  .year-form-card {
+    padding: 24px;
+    border: 1px solid #e6ebe7;
+    border-radius: 12px;
+    background: white;
+  }
+  
+  .year-form-card h3 {
+    margin-bottom: 22px;
+  }
+  
+  .year-form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+  
+  .year-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .year-field label {
+    color: #526258;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  
+  .year-field input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #dce4de;
+    border-radius: 8px;
+    outline: none;
+    color: #34473a;
+    font-size: 14px;
+  }
+  
+  .year-field input:focus {
+    border-color: #28784b;
+    box-shadow: 0 0 0 3px rgba(40, 120, 75, 0.1);
+  }
+  
+  .year-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 22px;
+  }
+  
+  .year-submit,
+  .year-cancel,
+  .year-edit {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  
+  .year-submit {
+    background: #28784b;
+    color: white;
+  }
+  
+  .year-submit:hover {
+    background: #1e603b;
+  }
+  
+  .year-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .year-cancel {
+    background: #f0f2f0;
+    color: #59665d;
+  }
+  
+  .years-error {
+    margin: 16px 0 0;
+    color: #c0392b;
+    font-size: 13px;
+  }
+  
+  .years-success {
+    margin: 16px 0 0;
+    color: #28784b;
+    font-size: 13px;
+  }
+  
+  .years-list-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .years-list-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .years-list-heading h3 {
+    margin: 0;
+  }
+  
+  .years-list-heading button {
+    padding: 8px 12px;
+    border: 1px solid #dce4de;
+    border-radius: 8px;
+    background: white;
+    color: #526258;
+    cursor: pointer;
+  }
+  
+  .years-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .year-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px;
+    border: 1px solid #e6ebe7;
+    border-radius: 12px;
+    background: white;
+  }
+  
+  .year-card-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    min-width: 0;
+  }
+  
+  .year-icon {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: #eaf3ed;
+    color: #28784b;
+    font-size: 21px;
+  }
+  
+  .year-card h4 {
+    margin: 0 0 6px;
+    color: #34473a;
+    font-size: 15px;
+  }
+  
+  .year-card p {
+    margin: 0;
+    color: #89958c;
+    font-size: 12px;
+  }
+  
+  .year-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #758178;
+    font-size: 12px;
+  }
+  
+  .year-edit {
+    background: #eaf3ed;
+    color: #28784b;
+  }
+  
+  .year-edit:hover {
+    background: #dcece1;
+  }
+  
+  .years-empty {
+    padding: 28px;
+    border: 1px dashed #dce4de;
+    border-radius: 10px;
+    color: #89958c;
+    text-align: center;
+    font-size: 14px;
+  }
+  
+  @media (max-width: 750px) {
+    .year-form-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .year-card {
+      flex-wrap: wrap;
+    }
+  
+    .year-card-main {
+      flex-basis: 100%;
+    }
+  
+    .year-card-info {
+      flex: 1;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .years-intro {
+      align-items: flex-start;
+    }
+  
+    .year-form-card {
+      padding: 18px;
+    }
+  }
+  

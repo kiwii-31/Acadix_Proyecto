@@ -1,0 +1,26 @@
+
+# Dependencias
+node_modules/
+**/node_modules/
+
+# Variables de entorno y secretos
+.env
+.env.*
+!.env.example
+
+# Archivos de compilación
+dist/
+build/
+coverage/
+
+# Archivos temporales
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Archivos locales de herramientas
+.vscode/
+.cursor/
+
+backend/scripts/find-student.js
