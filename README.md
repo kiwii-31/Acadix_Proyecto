@@ -2,6 +2,13 @@
 
 **Sistema web de gestión y consulta de materiales educativos.**
 
+## EQUIPO
+- Laura Martinez
+- Emanuel Flores
+- Elmer Flores Arce
+- Andrew Talavera
+- Leandro Vilchez
+
 ## Descripción
 
 ACADIX es una aplicación web desarrollada para organizar y centralizar los materiales educativos de una institución escolar.
