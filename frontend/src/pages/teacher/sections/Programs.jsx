@@ -117,6 +117,28 @@ function Programs() {
     }
   };
 
+  const handleDelete = async (program) => {
+    const confirmed = window.confirm(
+      `¿Estás seguro de eliminar el programa "${program.title}"?\n\nSe eliminarán definitivamente todos sus temas y materiales asociados. Esta acción no se puede deshacer.`,
+    );
+
+    if (!confirmed) return;
+
+    setError("");
+    setSuccess("");
+
+    try {
+      const data = await api(`/programs/${program.id}`, {
+        method: "DELETE",
+      });
+
+      setSuccess(data.message);
+      await loadPrograms();
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   const handleCancelForm = () => {
     setShowForm(false);
     setEditingId(null);
@@ -329,6 +351,7 @@ function Programs() {
                   onClick={() => setSelectedProgram(program)}>
                   Ver temas
                 </button>
+
                 {program.status === "DRAFT" && (
                   <button
                     type="button"
@@ -337,6 +360,13 @@ function Programs() {
                     Publicar
                   </button>
                 )}
+
+                <button
+                  type="button"
+                  className="teacher-button teacher-button-secondary"
+                  onClick={() => handleDelete(program)}>
+                  Eliminar
+                </button>
               </div>
             </article>
           ))}
