@@ -12,6 +12,7 @@ function Courses() {
 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -96,6 +97,31 @@ function Courses() {
       setError(err.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDeleteCourse = async (course) => {
+    const confirmed = window.confirm(
+      `¿Querés eliminar el curso "${course.name}"? Esta acción no se puede deshacer.`,
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const data = await api(`/courses/${course.id}`, {
+        method: "DELETE",
+      });
+
+      setSuccess(data.message || "Curso eliminado correctamente.");
+      await loadCourses(selectedYear);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -185,7 +211,16 @@ function Courses() {
                   <h4>{course.name}</h4>
                   <p>{course._count.divisions} divisiones</p>
                 </div>
+
                 <span>Orden: {course.order}</span>
+
+                <button
+                  type="button"
+                  className="course-delete-button"
+                  onClick={() => handleDeleteCourse(course)}
+                  disabled={deleting}>
+                  Eliminar
+                </button>
               </article>
             ))}
           </div>

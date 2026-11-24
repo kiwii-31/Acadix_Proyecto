@@ -16,6 +16,7 @@ function Subjects() {
   const [editingSubject, setEditingSubject] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -179,6 +180,31 @@ function Subjects() {
     }
   };
 
+  const handleDeleteSubject = async (subject) => {
+    const confirmed = window.confirm(
+      `¿Querés eliminar la materia "${subject.name}"? Esta acción no se puede deshacer.`,
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const data = await api(`/subjects/${subject.id}`, {
+        method: "DELETE",
+      });
+
+      setSuccess(data.message || "Materia eliminada correctamente.");
+      await loadSubjects();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   return (
     <div className="subjects-section">
       <div className="subjects-intro">
@@ -265,7 +291,7 @@ function Subjects() {
                   : "Crear materia"}
             </button>
 
-            <button type="button" onClick={closeForm}>
+            <button type="button" onClick={closeForm} disabled={saving}>
               Cancelar
             </button>
           </div>
@@ -302,14 +328,26 @@ function Subjects() {
                 <div className="subject-card-info">
                   <h4>{subject.name}</h4>
                   <p>{subject._count?.programs || 0} programas</p>
+                  <p>{subject._count?.assignments || 0} asignaciones</p>
                 </div>
 
-                <button
-                  type="button"
-                  className="subject-edit-button"
-                  onClick={() => openEditForm(subject)}>
-                  Editar
-                </button>
+                <div className="subject-card-actions">
+                  <button
+                    type="button"
+                    className="subject-edit-button"
+                    onClick={() => openEditForm(subject)}
+                    disabled={deleting}>
+                    Editar
+                  </button>
+
+                  <button
+                    type="button"
+                    className="subject-delete-button"
+                    onClick={() => handleDeleteSubject(subject)}
+                    disabled={deleting}>
+                    Eliminar
+                  </button>
+                </div>
               </article>
             ))}
           </div>

@@ -13,6 +13,7 @@ function Divisions() {
   const [divisionName, setDivisionName] = useState("");
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
@@ -72,7 +73,6 @@ function Divisions() {
 
     try {
       const data = await api(`/divisions?courseId=${selectedCourse}`);
-
       setDivisions(data.divisions);
     } catch (err) {
       setError(err.message);
@@ -114,6 +114,31 @@ function Divisions() {
       setError(err.message);
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleDeleteDivision = async (division) => {
+    const confirmed = window.confirm(
+      `¿Querés eliminar la división "${division.name}"? Esta acción no se puede deshacer.`,
+    );
+
+    if (!confirmed) return;
+
+    setDeleting(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const data = await api(`/divisions/${division.id}`, {
+        method: "DELETE",
+      });
+
+      setSuccess(data.message || "División eliminada correctamente.");
+      await loadDivisions();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -208,10 +233,20 @@ function Divisions() {
             {divisions.map((division) => (
               <article className="division-card" key={division.id}>
                 <div className="division-card-icon">▥</div>
+
                 <div>
                   <h4>{division.name}.ª</h4>
                   <p>{division._count.enrollments} estudiantes inscriptos</p>
+                  <p>{division._count.subjects} materias</p>
                 </div>
+
+                <button
+                  type="button"
+                  className="division-delete-button"
+                  onClick={() => handleDeleteDivision(division)}
+                  disabled={deleting}>
+                  Eliminar
+                </button>
               </article>
             ))}
           </div>

@@ -18,8 +18,12 @@ function Assignments() {
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const [replacementTarget, setReplacementTarget] = useState(null);
+  const [replacementTeacherId, setReplacementTeacherId] = useState("");
 
   const loadAssignments = async () => {
     try {
@@ -147,6 +151,71 @@ function Assignments() {
     }
   };
 
+  const handleDelete = async (assignment) => {
+    const confirmed = window.confirm(
+      `¿Querés quitar la asignación de ${assignment.teacher.user.firstName} ${assignment.teacher.user.lastName} a ${assignment.subject.name}?`,
+    );
+
+    if (!confirmed) return;
+
+    setError("");
+    setSuccess("");
+    setDeleting(true);
+
+    try {
+      await api(`/assignments/${assignment.id}`, {
+        method: "DELETE",
+      });
+
+      setSuccess("Asignación eliminada correctamente.");
+      await loadAssignments();
+    } catch (err) {
+      if (err.data?.requiresReplacement) {
+        setReplacementTarget(assignment);
+        setReplacementTeacherId("");
+        setError("");
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleConfirmReplacement = async () => {
+    if (!replacementTeacherId || !replacementTarget) {
+      setError("Seleccioná un docente reemplazante.");
+      return;
+    }
+
+    setDeleting(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const data = await api(`/assignments/${replacementTarget.id}`, {
+        method: "DELETE",
+        body: JSON.stringify({ replacementTeacherId }),
+      });
+
+      setSuccess(data.message || "Asignación eliminada correctamente.");
+      setReplacementTarget(null);
+      setReplacementTeacherId("");
+
+      await loadAssignments();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleCancelReplacement = () => {
+    setReplacementTarget(null);
+    setReplacementTeacherId("");
+    setError("");
+  };
+
   const handleYearChange = (value) => {
     setYearId(value);
     setCourseId("");
@@ -170,6 +239,20 @@ function Assignments() {
     setSubjectId("");
     setSubjects([]);
   };
+
+  const assignedTeacherIds = replacementTarget
+    ? assignments
+        .filter(
+          (assignment) =>
+            assignment.subject.id === replacementTarget.subject.id &&
+            assignment.teacher.id !== replacementTarget.teacher.id,
+        )
+        .map((assignment) => assignment.teacher.id)
+    : [];
+
+  const replacementOptions = teachers.filter((teacher) =>
+    assignedTeacherIds.includes(teacher.teacher.id),
+  );
 
   return (
     <div className="assignments-section">
@@ -315,11 +398,79 @@ function Assignments() {
                     {assignment.subject.division.name}
                   </span>
                 </div>
+
+                <button
+                  type="button"
+                  className="assignment-delete-button"
+                  onClick={() => handleDelete(assignment)}
+                  disabled={deleting}>
+                  Eliminar
+                </button>
               </article>
             ))}
           </div>
         )}
       </section>
+
+      {replacementTarget && (
+        <div className="assignment-modal-overlay">
+          <section
+            className="assignment-replacement-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="replacement-title">
+            <h3 id="replacement-title">Elegir docente reemplazante</h3>
+
+            <p>
+              Este docente tiene programas a su cargo en{" "}
+              <strong>{replacementTarget.subject.name}</strong>. Para quitar su
+              asignación, primero tenés que transferir esos programas a otro
+              docente asignado a la misma materia.
+            </p>
+
+            <label htmlFor="replacement-teacher">Docente reemplazante</label>
+
+            <select
+              id="replacement-teacher"
+              value={replacementTeacherId}
+              onChange={(e) => setReplacementTeacherId(e.target.value)}>
+              <option value="">Seleccionar docente</option>
+              {replacementOptions.map((teacher) => (
+                <option key={teacher.teacher.id} value={teacher.teacher.id}>
+                  {teacher.firstName} {teacher.lastName}
+                </option>
+              ))}
+            </select>
+
+            {replacementOptions.length === 0 && (
+              <p>
+                No hay otros docentes asignados a esta materia. Primero asigná
+                otro docente para poder transferir los programas.
+              </p>
+            )}
+
+            <div className="assignment-modal-actions">
+              <button
+                type="button"
+                onClick={handleCancelReplacement}
+                disabled={deleting}>
+                Cancelar
+              </button>
+
+              <button
+                type="button"
+                onClick={handleConfirmReplacement}
+                disabled={
+                  deleting ||
+                  !replacementTeacherId ||
+                  replacementOptions.length === 0
+                }>
+                {deleting ? "Procesando..." : "Transferir y eliminar"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }

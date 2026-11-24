@@ -133,3 +133,47 @@ export const updateCourse = async (req, res) => {
     });
   }
 };
+
+export const deleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const course = await prisma.course.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            divisions: true,
+          },
+        },
+      },
+    });
+
+    if (!course) {
+      return res.status(404).json({
+        message: "No se encontró el curso.",
+      });
+    }
+
+    if (course._count.divisions > 0) {
+      return res.status(409).json({
+        message:
+          "No se puede eliminar el curso porque tiene divisiones asociadas.",
+      });
+    }
+
+    await prisma.course.delete({
+      where: { id },
+    });
+
+    return res.json({
+      message: "Curso eliminado correctamente.",
+    });
+  } catch (error) {
+    console.error("Error al eliminar curso:", error);
+
+    return res.status(500).json({
+      message: "No se pudo eliminar el curso.",
+    });
+  }
+};

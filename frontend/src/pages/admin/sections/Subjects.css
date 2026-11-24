@@ -216,3 +216,40 @@
 .subject-card-info {
   min-width: 0;
 }
+
+.subject-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.subject-delete-button {
+  padding: 8px 14px;
+  border: 1px solid #dc6464;
+  border-radius: 8px;
+  background: #fff;
+  color: #c43d3d;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.subject-delete-button:hover:not(:disabled) {
+  background: #c43d3d;
+  color: #fff;
+}
+
+.subject-delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .subject-card-actions {
+    width: 100%;
+  }
+}

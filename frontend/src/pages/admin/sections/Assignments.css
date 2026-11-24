@@ -271,3 +271,121 @@
     padding: 18px;
   }
 }
+
+/* Botón para eliminar una asignación */
+.assignment-delete-button {
+  padding: 9px 16px;
+  border: 1px solid #dc6464;
+  border-radius: 8px;
+  background: #fff;
+  color: #c43d3d;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.assignment-delete-button:hover:not(:disabled) {
+  background: #c43d3d;
+  color: #fff;
+}
+
+.assignment-delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Ventana de selección de reemplazante */
+.assignment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.assignment-replacement-modal {
+  width: 100%;
+  max-width: 480px;
+  padding: 26px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.assignment-replacement-modal h3 {
+  margin: 0 0 14px;
+  color: #253b31;
+}
+
+.assignment-replacement-modal p {
+  margin: 0 0 18px;
+  color: #58645e;
+  line-height: 1.5;
+}
+
+.assignment-replacement-modal label {
+  display: block;
+  margin-bottom: 8px;
+  color: #34483d;
+  font-weight: 600;
+}
+
+.assignment-replacement-modal select {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1px solid #cbd5ce;
+  border-radius: 8px;
+  background: #fff;
+  color: #26352d;
+  font: inherit;
+}
+
+.assignment-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.assignment-modal-actions button {
+  padding: 10px 16px;
+  border: 1px solid #cbd5ce;
+  border-radius: 8px;
+  background: #fff;
+  color: #34483d;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.assignment-modal-actions button:last-child {
+  border-color: #397b59;
+  background: #397b59;
+  color: #fff;
+}
+
+.assignment-modal-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .assignment-replacement-modal {
+    padding: 20px;
+  }
+
+  .assignment-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .assignment-modal-actions button {
+    width: 100%;
+  }
+}

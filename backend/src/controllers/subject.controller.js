@@ -15,11 +15,11 @@ export const getSubjects = async (req, res) => {
       where: { divisionId },
       include: {
         _count: {
-            select: {
-              programs: true,
-              assignments: true,
-            },
+          select: {
+            programs: true,
+            assignments: true,
           },
+        },
       },
       orderBy: {
         name: "asc",
@@ -123,6 +123,51 @@ export const updateSubject = async (req, res) => {
 
     return res.status(500).json({
       message: "No se pudo actualizar la materia.",
+    });
+  }
+};
+
+export const deleteSubject = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const subject = await prisma.subject.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            programs: true,
+            assignments: true,
+          },
+        },
+      },
+    });
+
+    if (!subject) {
+      return res.status(404).json({
+        message: "No se encontró la materia.",
+      });
+    }
+
+    if (subject._count.programs > 0 || subject._count.assignments > 0) {
+      return res.status(409).json({
+        message:
+          "No se puede eliminar la materia porque tiene programas o asignaciones docentes asociadas.",
+      });
+    }
+
+    await prisma.subject.delete({
+      where: { id },
+    });
+
+    return res.json({
+      message: "Materia eliminada correctamente.",
+    });
+  } catch (error) {
+    console.error("Error al eliminar materia:", error);
+
+    return res.status(500).json({
+      message: "No se pudo eliminar la materia.",
     });
   }
 };

@@ -110,13 +110,82 @@ export const createAssignment = async (req, res) => {
 export const deleteAssignment = async (req, res) => {
   try {
     const { id } = req.params;
+    const { replacementTeacherId } = req.body || {};
 
-    await prisma.teacherAssignment.delete({
+    const assignment = await prisma.teacherAssignment.findUnique({
       where: { id },
     });
 
+    if (!assignment) {
+      return res.status(404).json({
+        message: "No se encontró la asignación.",
+      });
+    }
+
+    const programs = await prisma.program.findMany({
+      where: {
+        subjectId: assignment.subjectId,
+        responsibleTeacherId: assignment.teacherId,
+      },
+      select: { id: true },
+    });
+
+    if (programs.length > 0) {
+      if (!replacementTeacherId) {
+        return res.status(409).json({
+          requiresReplacement: true,
+          programsCount: programs.length,
+          message:
+            "Este docente tiene programas a su cargo. Elegí un reemplazante para continuar.",
+        });
+      }
+
+      if (replacementTeacherId === assignment.teacherId) {
+        return res.status(400).json({
+          message: "El reemplazante debe ser otro docente.",
+        });
+      }
+
+      const replacementAssignment = await prisma.teacherAssignment.findUnique({
+        where: {
+          teacherId_subjectId: {
+            teacherId: replacementTeacherId,
+            subjectId: assignment.subjectId,
+          },
+        },
+      });
+
+      if (!replacementAssignment) {
+        return res.status(400).json({
+          message:
+            "El docente reemplazante debe estar asignado a esa misma materia.",
+        });
+      }
+    }
+
+    await prisma.$transaction(async (tx) => {
+      if (programs.length > 0) {
+        await tx.program.updateMany({
+          where: {
+            subjectId: assignment.subjectId,
+            responsibleTeacherId: assignment.teacherId,
+          },
+          data: {
+            responsibleTeacherId: replacementTeacherId,
+          },
+        });
+      }
+
+      await tx.teacherAssignment.delete({
+        where: { id },
+      });
+    });
+
     return res.json({
-      message: "Asignación eliminada correctamente.",
+      message:
+        programs.length > 0
+          ? "Responsabilidades transferidas y asignación eliminada correctamente."
+          : "Asignación eliminada correctamente.",
     });
   } catch (error) {
     if (error.code === "P2025") {

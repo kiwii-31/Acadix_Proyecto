@@ -126,3 +126,48 @@ export const updateDivision = async (req, res) => {
     });
   }
 };
+
+export const deleteDivision = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const division = await prisma.division.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: {
+            subjects: true,
+            enrollments: true,
+          },
+        },
+      },
+    });
+
+    if (!division) {
+      return res.status(404).json({
+        message: "No se encontró la división.",
+      });
+    }
+
+    if (division._count.subjects > 0 || division._count.enrollments > 0) {
+      return res.status(409).json({
+        message:
+          "No se puede eliminar la división porque tiene materias o inscripciones asociadas.",
+      });
+    }
+
+    await prisma.division.delete({
+      where: { id },
+    });
+
+    return res.json({
+      message: "División eliminada correctamente.",
+    });
+  } catch (error) {
+    console.error("Error al eliminar división:", error);
+
+    return res.status(500).json({
+      message: "No se pudo eliminar la división.",
+    });
+  }
+};

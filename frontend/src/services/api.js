@@ -15,7 +15,10 @@ export const api = async (endpoint, options = {}) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Ocurrió un error en el servidor.");
+    const error = new Error(data.message || "Ocurrió un error en el servidor.");
+    error.status = response.status;
+    error.data = data;
+    throw error;
   }
 
   return data;

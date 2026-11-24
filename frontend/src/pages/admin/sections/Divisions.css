@@ -199,3 +199,27 @@
   color: #398052;
   font-size: 14px;
 }
+
+.division-delete-button {
+  padding: 8px 14px;
+  border: 1px solid #dc6464;
+  border-radius: 8px;
+  background: #fff;
+  color: #c43d3d;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.division-delete-button:hover:not(:disabled) {
+  background: #c43d3d;
+  color: #fff;
+}
+
+.division-delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
