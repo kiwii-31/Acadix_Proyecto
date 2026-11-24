@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://acadix-backend-lsuv.onrender.com/api/$1"
+    }
+  ]
+}
