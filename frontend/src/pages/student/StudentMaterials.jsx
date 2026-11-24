@@ -24,7 +24,7 @@ function StudentMaterials({ topic, onBack }) {
   const handleDownload = async (material) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/materials/student/${material.id}/download`,
+        `${import.meta.env.VITE_API_URL || "/api"}/materials/student/${material.id}/download`,
         { credentials: "include" },
       );
 

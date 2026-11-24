@@ -80,7 +80,7 @@ function Materials({ topic, onBack }) {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/materials/${material.id}/download`,
+        `${import.meta.env.VITE_API_URL || "/api"}/materials/${material.id}/download`,
         {
           credentials: "include",
         },
